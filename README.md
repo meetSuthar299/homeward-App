@@ -68,7 +68,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-rdutta - [GitHub](https://github.com/rdutta) - Repository Owner
+rdutta - [GitHub](https://github.com/rdutta) - Contributor
 
 DerekNgn - [GitHub](https://github.com/DerekNgn) - Contributor
 
@@ -76,12 +76,11 @@ BraedonTaylor - [GitHub](https://github.com/BraedonTaylor) - Contributor
 
 babug154 - [GitHub](https://github.com/babug154) - Contributor
 
-msuth319 - [GitHub](https://github.com/msuth319) - Contributor
+meetSuthar299 - [GitHub](https://github.com/meetSuthar299) - Contributor
 
-Project Link: [https://github.com/rdutta/homeward](https://github.com/rdutta/homeward)
+
 
 ## Wiki
 
 Find documentation in the project wiki.
 
-Link: https://github.com/dutta64/homeward/wiki
