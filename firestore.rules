@@ -1,0 +1,101 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Authentication functions
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isUser() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function isAdmin() {
+      return get(/databases/$(database)/documents/roles/$(request.auth.uid)).data.role["admin"];
+    }
+
+    // Required field functions
+
+    function hasAllUserFields() {
+      let data = request.resource.data;
+
+      return data.keys().hasOnly([
+        'email', 'name', 'phoneNumber', 'photoURL', 'posts', 'username'
+      ])
+      && data.keys().hasAll([
+        'email', 'name', 'phoneNumber', 'photoURL', 'posts', 'username'
+      ]);
+    }
+
+    function hasOnlyUserFields() {
+      let data = request.resource.data;
+
+      return data.diff(resource.data).affectedKeys().hasOnly(['email', 'username', 'phoneNumber', 'photoURL']);
+    }
+
+    function hasOnlyPostFields() {
+      let data = request.resource.data;
+
+      return data.keys().hasOnly([
+      'lost', 'date', 'email', 'location', 'petName', 'phoneNumber',
+      'species', 'title', 'uid', 'uri', 'username'
+      ]);
+    }
+
+    // Field validation functions
+
+    function isValidUser() {
+      let data = request.resource.data;
+
+      return data.email == request.auth.token.email
+      && data.name == request.auth.token.name
+      && data.phoneNumber.matches('^[0-9]{10}$') || data.phoneNumber == ''
+      && data.photoURL is string
+      && data.posts == []
+      && data.username.matches('^[a-zA-Z0-9]{1,12}$')
+      && request.resource.id == request.auth.uid;
+    }
+
+    function isValidUserUpdate() {
+      let data = request.resource.data;
+
+      return data.email.matches('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{1,5}$')
+      && data.username.matches('^[a-zA-Z0-9]{1,12}$')
+      && data.phoneNumber.matches('^[0-9]{10}$') || data.phoneNumber == ''
+      && data.photoURL is string;
+    }
+
+    function isValidPost() {
+      let data = request.resource.data;
+
+      return data.lost is bool
+      && data.date == request.time
+      && data.email.matches('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{1,5}$') || data.email == ''
+      && data.location.size() >= 4 && data.location.size() <= 100
+      && (data.lost && data.petName.matches('^[a-zA-Z]{1,10}$')) || (!data.lost && !('petName' in data.keys()))
+      && data.phoneNumber.matches('^[0-9]{10}$') || data.phoneNumber == ''
+      && data.species in ['canine', 'feline', 'other']
+      && data.title.size() >= 10 && data.title.size() <= 250
+      && data.uid == request.auth.uid
+      && data.uri is string
+      && data.username == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.username;
+    }
+
+    // Match rules
+
+    match /users/{user} {
+      allow read: if request.auth.uid == user;
+      allow create: if isAuthenticated() && hasAllUserFields() && isValidUser();
+      allow update: if request.auth.uid == user && hasOnlyUserFields() && isValidUserUpdate();
+      allow delete: if isAdmin();
+    }
+
+    match /posts/{post} {
+      allow read: if true;
+      allow create: if isUser() && hasOnlyPostFields() && isValidPost();
+      allow delete: if request.auth.uid == resource.data.uid || isAdmin();
+    }
+  }
+}

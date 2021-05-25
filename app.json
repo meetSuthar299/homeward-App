@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "homeward",
+    "slug": "homeward",
+    "version": "0.1.1",
+    "sdkVersion": "39.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#0277bd"
+    },
+    "ios": {
+      "bundleIdentifier": "ca.pog.homeward",
+      "buildNumber": "0.1.1",
+      "supportsTablet": true,
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.942422012627-b4993h3g9dfbt906fejribcun54fvom7"
+        },
+        "googleMapsApiKey": "AIzaSyBFMhipgj8TlR-Ia83dCacWBPl03AgFKFI"
+      }
+    },
+    "android": {
+      "package": "ca.pog.homeward",
+      "versionCode": 1,
+      "config": {
+        "googleSignIn": {
+          "apiKey": "AIzaSyBFMhipgj8TlR-Ia83dCacWBPl03AgFKFI",
+          "certificateHash": "6A6D252E77C2C2F51411673F323642544DBDDEF5"
+        },
+        "googleMaps": {
+          "apiKey": "AIzaSyBFMhipgj8TlR-Ia83dCacWBPl03AgFKFI"
+        }
+      }
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "web": {
+      "favicon": "./assets/images/favicon.png"
+    },
+    "entryPoint": "./src/App.js",
+    "facebookScheme": "fb389971068883864",
+    "facebookAppId": "389971068883864",
+    "facebookDisplayName": "homeward",
+    "facebookAutoInitEnabled": true
+  }
+}
