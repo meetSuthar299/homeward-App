@@ -35,7 +35,7 @@ To run the project, an iOS or Android mobile device is required.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/rdutta/homeward.git
+   git clone https://github.com/meetsuthar299/homeward-App.git
    ```
 2. Install node packages
    ```sh
